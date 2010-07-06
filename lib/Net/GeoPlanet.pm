@@ -370,7 +370,7 @@ None known
 
 The latest code for this module can be found at
 
-	http://www.exit2shell.com/cgi-bin/cvsweb.cgi/Net-GeoPlanet/
+	http://github.com/skreuzer/Net-GeoPlanet
 
 =head1 AUTHOR
 

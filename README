@@ -14,7 +14,7 @@ perldoc command.
 
 COPYRIGHT AND LICENSE
 
-Copyright (C) 2008 Steven Kreuzer
+Copyright (C) 2008 Steven Kreuzer <skreuzer@exit2shell.com>
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
