@@ -129,6 +129,24 @@ sub children {
 	return $self->_make_request($url, 'get');
 }
 
+sub oceans {
+	my $self = shift;
+	my %p = @_;
+	my $url = $QUERY_API_URL;
+	$url .= 'oceans?';
+	$url .= 'appid='    . $self->{api_key};
+	return $self->_make_request($url, 'get');
+}
+
+sub seas {
+	my $self = shift;
+	my %p = @_;
+	my $url = $QUERY_API_URL;
+	$url .= 'seas?';
+	$url .= 'appid='    . $self->{api_key};
+	return $self->_make_request($url, 'get');
+}
+
 sub placetypes {
 	my $self = shift;
 	my %p = @_;
