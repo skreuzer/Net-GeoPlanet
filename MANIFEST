@@ -1,7 +1,7 @@
 MANIFEST
 Makefile.PL
 lib/Net/GeoPlanet.pm
-README
+README.md
 CHANGES
 t/00-load.t
 t/pod-coverage.t
