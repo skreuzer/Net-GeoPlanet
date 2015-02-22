@@ -321,6 +321,14 @@ The resources in the collection each describe a single place type.
 
 Returns a resource that describes a single place type.
 
+=head2 seas
+
+Returns a collection of places that are seas.
+
+=head2 oceans
+
+Returns a collection of places that are oceans.
+
 =head1 MATRIX PARAMETERS
 
 GeoPlanet supports several parameters (name/value pairs) called "matrix
