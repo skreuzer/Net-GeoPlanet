@@ -18,3 +18,5 @@ Copyright (C) 2008 Steven Kreuzer <skreuzer@FreeBSD.org>
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
+
+[![Build Status](https://travis-ci.org/skreuzer/Net-GeoPlanet.svg?branch=master)](https://travis-ci.org/skreuzer/Net-GeoPlanet)
