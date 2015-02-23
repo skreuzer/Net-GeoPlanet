@@ -12,7 +12,7 @@ perldoc command.
 
     perldoc Net::GeoPlanet
 
-# Copyright AND License
+# Copyright and License
 
 Copyright (C) 2008 Steven Kreuzer <skreuzer@FreeBSD.org>
 
