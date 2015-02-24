@@ -44,17 +44,15 @@ has 'lasturl' =>
 sub places {
     my $self = shift;
     my %p = @_;
-    my $url = "places";
-    if(defined $p{type}) {
-        $url .= '$and(.q(' . $p{place} . '),.type(' . $p{type} . '));?';
-    } else {
-        $url .= '.q(\'' . $p{place} . '\')?';
-    }
-    $url .= 'start='      . $p{start}       . '&' if defined $p{start};
-    $url .= 'count='      . $p{count}       . '&' if defined $p{count};
-    $url .= 'callback='   . $p{callback}    . '&' if defined $p{callback};
-    $url .= 'select='     . $p{select}      . '&' if defined $p{select};
-    return $self->_make_request($url, 'get');
+    my $url .= "places";
+    $url .= (defined $p{type})
+        ? sprintf('$and(.q(%s),.type(%s));?', $p{place}, $p{type})
+        : sprintf(".q('%s')?", $p{place});
+    $url .= 'start='    . $p{start}     . '&' if defined $p{start};
+    $url .= 'count='    . $p{count}     . '&' if defined $p{count};
+    $url .= 'callback=' . $p{callback}  . '&' if defined $p{callback};
+    $url .= 'select='   . $p{select}    . '&' if defined $p{select};
+    return $self->_make_request($url);
 }
 
 sub place {
@@ -63,7 +61,7 @@ sub place {
     my $url = 'place/'    . $p{woeid} . '?';
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub parent {
@@ -74,7 +72,7 @@ sub parent {
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub ancestors {
@@ -83,7 +81,7 @@ sub ancestors {
     my $url = 'place/'    . $p{woeid} . '/ancestors?';
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub belongtos {
@@ -94,7 +92,7 @@ sub belongtos {
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub neighbors {
@@ -105,7 +103,7 @@ sub neighbors {
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub siblings {
@@ -116,7 +114,7 @@ sub siblings {
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub children {
@@ -127,37 +125,34 @@ sub children {
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub oceans {
     my $self = shift;
     my %p = @_;
     my $url = 'oceans?';
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub seas {
     my $self = shift;
     my %p = @_;
     my $url = 'seas?';
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub placetypes {
     my $self = shift;
     my %p = @_;
-    my $url;
-    if(defined $p{type}) {
-        $url = "placetypes.type(" . $p{type} . ")?";
-    } else {
-        $url = "placetypes?";
-    }
+    my $url = (defined $p{type})
+        ? sprintf("placetypes.type(%s)?", $p{type})
+        : "placetypes?";
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
     $url .= 'start='    . $p{start} . '&' if defined $p{start};
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub placetype {
@@ -166,13 +161,13 @@ sub placetype {
     my $url = "placetype/"  . $p{woeid}     . '?';
     $url .= 'callback='     . $p{callback}  . '&' if defined $p{callback};
     $url .= 'select='       . $p{select}    . '&' if defined $p{select};
-    return $self->_make_request($url, 'get');
+    return $self->_make_request($url);
 }
 
 sub _make_request {
     my $self = shift;
     my $url = shift;
-    my $method = shift;
+    my $method = shift || 'get';
 
     my $fullurl = sprintf("%s/%s&appid=%s&format=%s&lang=%s",
         $self->uri,
