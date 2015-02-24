@@ -3,8 +3,9 @@ package Net::GeoPlanet;
 use strict;
 use LWP;
 use URI;
+use Moose;
 
-our $VERSION = '0.2';
+our $VERSION = '0.3';
 our $QUERY_API_URL = 'http://where.yahooapis.com/v1/';
 our @required_params = qw(api_key);
 
@@ -404,7 +405,7 @@ Written by Steven Kreuzer <skreuzer@FreeBSD.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2008, Steven Kreuzer
+Copyright (c) 2008, 2015 Steven Kreuzer
 
 All rights reserved.  This program is free software; you can
 redistribute it and/or modify it under the same terms as Perl

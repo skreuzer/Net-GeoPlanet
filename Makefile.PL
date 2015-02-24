@@ -7,5 +7,6 @@ WriteMakefile(
     'VERSION_FROM'  => 'lib/Net/GeoPlanet.pm',
     'PREREQ_PM'     => {
                             LWP::UserAgent  => 2.0.33,
-                            URI             => 1.35
+                            URI             => 1.35,
+                            Moose           => 2.1403
                        });
