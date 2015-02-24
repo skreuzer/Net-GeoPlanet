@@ -6,14 +6,45 @@ use URI;
 use Moose;
 
 our $VERSION = '0.3';
-our $QUERY_API_URL = 'http://where.yahooapis.com/v1/';
-our @required_params = qw(api_key);
+
+has 'appid' =>
+(
+    is => 'rw',
+    isa => 'Str',
+    required => 1
+);
+
+has 'uri' =>
+(
+    is => 'rw',
+    isa => 'Str',
+    default => 'http://where.yahooapis.com/v1'
+);
+
+has 'format' =>
+(
+    is => 'rw',
+    isa => 'Str',
+    default => 'json'
+);
+
+has 'lang' =>
+(
+    is => 'rw',
+    isa => 'Str',
+    default => 'en-US'
+);
+
+has 'lasturl' =>
+(
+    is => 'ro',
+    isa => 'Str'
+);
 
 sub places {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= "places";
+    my $url = "places";
     if(defined $p{type}) {
         $url .= '$and(.q(' . $p{place} . '),.type(' . $p{type} . '));?';
     } else {
@@ -21,162 +52,120 @@ sub places {
     }
     $url .= 'start='      . $p{start}       . '&' if defined $p{start};
     $url .= 'count='      . $p{count}       . '&' if defined $p{count};
-    $url .= 'lang='       . $p{lang}        . '&' if defined $p{lang};
-    $url .= 'format='     . $p{format}      . '&' if defined $p{format};
     $url .= 'callback='   . $p{callback}    . '&' if defined $p{callback};
     $url .= 'select='     . $p{select}      . '&' if defined $p{select};
-    $url .= 'appid='      . $self->{api_key};
     return $self->_make_request($url, 'get');
 }
 
 sub place {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= 'place/'    . $p{woeid} . '?';
+    my $url = 'place/'    . $p{woeid} . '?';
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'lang='     . $p{lang} . '&' if defined $p{lang};
-    $url .= 'format='   . $p{format} . '&' if defined $p{format};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    $url .= 'appid='    . $self->{api_key};
     return $self->_make_request($url, 'get');
 }
 
 sub parent {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= 'place/'    . $p{woeid} . '/parent?';
+    my $url = 'place/'    . $p{woeid} . '/parent?';
     $url .= 'start='    . $p{start} . '&' if defined $p{start};
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'lang='     . $p{lang} . '&' if defined $p{lang};
-    $url .= 'format='   . $p{format} . '&' if defined $p{format};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    $url .= 'appid='    . $self->{api_key};
     return $self->_make_request($url, 'get');
 }
 
 sub ancestors {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= 'place/'    . $p{woeid} . '/ancestors?';
+    my $url = 'place/'    . $p{woeid} . '/ancestors?';
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'lang='     . $p{lang} . '&' if defined $p{lang};
-    $url .= 'format='   . $p{format} . '&' if defined $p{format};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    $url .= 'appid='    . $self->{api_key};
     return $self->_make_request($url, 'get');
 }
 
 sub belongtos {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= 'place/'    . $p{woeid} . '/belongtos?';
+    my $url = 'place/'    . $p{woeid} . '/belongtos?';
     $url .= 'start='    . $p{start} . '&' if defined $p{start};
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'lang='     . $p{lang} . '&' if defined $p{lang};
-    $url .= 'format='   . $p{format} . '&' if defined $p{format};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    $url .= 'appid='    . $self->{api_key};
     return $self->_make_request($url, 'get');
 }
 
 sub neighbors {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= 'place/'    . $p{woeid} . '/neighbors?';
+    my $url = 'place/'    . $p{woeid} . '/neighbors?';
     $url .= 'start='    . $p{start} . '&' if defined $p{start};
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'lang='     . $p{lang} . '&' if defined $p{lang};
-    $url .= 'format='   . $p{format} . '&' if defined $p{format};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    $url .= 'appid='    . $self->{api_key};
     return $self->_make_request($url, 'get');
 }
 
 sub siblings {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= 'place/'    . $p{woeid} . '/siblings?';
+    my $url = 'place/'    . $p{woeid} . '/siblings?';
     $url .= 'start='    . $p{start} . '&' if defined $p{start};
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'lang='     . $p{lang} . '&' if defined $p{lang};
-    $url .= 'format='   . $p{format} . '&' if defined $p{format};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    $url .= 'appid='    . $self->{api_key};
     return $self->_make_request($url, 'get');
 }
 
 sub children {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= 'place/'    . $p{woeid} . '/children?';
+    my $url = 'place/'    . $p{woeid} . '/children?';
     $url .= 'start='    . $p{start} . '&' if defined $p{start};
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'lang='     . $p{lang} . '&' if defined $p{lang};
-    $url .= 'format='   . $p{format} . '&' if defined $p{format};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
-    $url .= 'appid='    . $self->{api_key};
     return $self->_make_request($url, 'get');
 }
 
 sub oceans {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= 'oceans?';
-    $url .= 'appid='    . $self->{api_key};
+    my $url = 'oceans?';
     return $self->_make_request($url, 'get');
 }
 
 sub seas {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= 'seas?';
-    $url .= 'appid='    . $self->{api_key};
+    my $url = 'seas?';
     return $self->_make_request($url, 'get');
 }
 
 sub placetypes {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
+    my $url;
     if(defined $p{type}) {
-        $url .= "placetypes.type(" . $p{type} . ")?";
+        $url = "placetypes.type(" . $p{type} . ")?";
     } else {
-        $url .= "placetypes?";
+        $url = "placetypes?";
     }
-    $url .= 'lang='       . $p{lang} . '&' if defined $p{lang};
-    $url .= 'format='   . $p{format} . '&' if defined $p{format};
     $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
     $url .= 'select='   . $p{select} . '&' if defined $p{select};
     $url .= 'start='    . $p{start} . '&' if defined $p{start};
     $url .= 'count='    . $p{count} . '&' if defined $p{count};
-    $url .= 'appid=' . $self->{api_key};
     return $self->_make_request($url, 'get');
 }
 
 sub placetype {
     my $self = shift;
     my %p = @_;
-    my $url = $QUERY_API_URL;
-    $url .= "placetype/"    . $p{woeid}     . '?';
-    $url .= 'lang='         . $p{lang}      . '&' if defined $p{lang};
-    $url .= 'format='       . $p{format}    . '&' if defined $p{format};
+    my $url = "placetype/"  . $p{woeid}     . '?';
     $url .= 'callback='     . $p{callback}  . '&' if defined $p{callback};
     $url .= 'select='       . $p{select}    . '&' if defined $p{select};
-    $url .= 'appid='        . $self->{api_key};
     return $self->_make_request($url, 'get');
 }
 
@@ -184,37 +173,23 @@ sub _make_request {
     my $self = shift;
     my $url = shift;
     my $method = shift;
-    my $u = URI->new($url);
 
-    my $response = $self->{browser}->$method($u, 'Accept' => "application/xml");
+    my $fullurl = sprintf("%s/%s&appid=%s&format=%s&lang=%s",
+        $self->uri,
+        $url,
+        $self->appid,
+        $self->format,
+        $self->lang);
+
+    my $u = URI->new($fullurl);
+
+    my $browser = LWP::UserAgent->new;
+    my $response = $browser->$method($u, 'Accept' => "application/xml");
 
     die "$method on $url failed: " . $response->status_line
         unless ( $response->is_success );
 
     return $response->content;
-}
-
-sub _check {
-    my $self = shift;
-    foreach my $param ( @required_params ) {
-        if ( not defined $self->{$param} ) {
-            die "Missing required parameter '$param'";
-        }
-    }
-}
-
-sub new {
-    my $proto  = shift;
-    my $class  = ref $proto || $proto;
-    my %params = @_;
-    my $client = bless \%params, $class;
-
-    # Verify arguments
-    $client->_check;
-
-    $client->{browser} = LWP::UserAgent->new;
-
-    return $client;
 }
 
 1;
@@ -230,19 +205,19 @@ Net::GeoPlanet - Access Yahoo's GeoPlanet location service
     use Net::GeoPlanet;
     use Data::Dumper;
 
-    my $geoplanet = Net::GeoPlanet->new(api_key => $api_key);
+    my $geoplanet = Net::GeoPlanet->new(
+        appid => $api_key,
+        format=>"json",
+        lang => "fr-CA"
+    );
 
     print Dumper($geoplanet->places(place => "Woodside, NY 11377"));
 
-    print Dumper($geoplanet->place(
-                    woeid => "2507854",
-                    format => "json"
-                ));
+    print Dumper($geoplanet->place(woeid => "2507854"));
 
     print Dumper($geoplanet->parent(
                     woeid => "638242",
                     select => "long",
-                    lang => "fr-CA"
                 ));
 
 =head1 ABOUT
