@@ -109,22 +109,22 @@ sub neighbors {
 sub siblings {
     my $self = shift;
     my %p = @_;
-    my $url = 'place/'    . $p{woeid} . '/siblings?';
-    $url .= 'start='    . $p{start} . '&' if defined $p{start};
-    $url .= 'count='    . $p{count} . '&' if defined $p{count};
-    $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
+    my $url = sprintf("place/%s/siblings?", $p{woeid});
+    delete $p{woeid};
+    foreach my $k (keys %p) {
+        $url .= sprintf("%s=%s&", $k, $p{$k});
+    }
     return $self->_make_request($url);
 }
 
 sub children {
     my $self = shift;
     my %p = @_;
-    my $url = 'place/'    . $p{woeid} . '/children?';
-    $url .= 'start='    . $p{start} . '&' if defined $p{start};
-    $url .= 'count='    . $p{count} . '&' if defined $p{count};
-    $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
+    my $url = sprintf("place/%s/children?", $p{woeid});
+    delete $p{woeid};
+    foreach my $k (keys %p) {
+        $url .= sprintf("%s=%s&", $k, $p{$k});
+    }
     return $self->_make_request($url);
 }
 
@@ -158,11 +158,14 @@ sub placetypes {
 sub placetype {
     my $self = shift;
     my %p = @_;
-    my $url = "placetype/"  . $p{woeid}     . '?';
-    $url .= 'callback='     . $p{callback}  . '&' if defined $p{callback};
-    $url .= 'select='       . $p{select}    . '&' if defined $p{select};
+    my $url = sprintf("placetype/%s?", $p{woeid});
+    delete $p{woeid};
+    foreach my $k (keys %p) {
+        $url .= sprintf("%s=%s&", $k, $p{$k});
+    }
     return $self->_make_request($url);
 }
+
 
 sub _make_request {
     my $self = shift;
