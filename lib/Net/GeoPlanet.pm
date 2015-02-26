@@ -48,19 +48,22 @@ sub places {
     $url .= (defined $p{type})
         ? sprintf('$and(.q(%s),.type(%s));?', $p{place}, $p{type})
         : sprintf(".q('%s')?", $p{place});
-    $url .= 'start='    . $p{start}     . '&' if defined $p{start};
-    $url .= 'count='    . $p{count}     . '&' if defined $p{count};
-    $url .= 'callback=' . $p{callback}  . '&' if defined $p{callback};
-    $url .= 'select='   . $p{select}    . '&' if defined $p{select};
+    delete $p{place};
+    delete $p{type};
+    foreach my $k (keys %p) {
+        $url .= sprintf("%s=%s&", $k, $p{$k});
+    }
     return $self->_make_request($url);
 }
 
 sub place {
     my $self = shift;
     my %p = @_;
-    my $url = 'place/'    . $p{woeid} . '?';
-    $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
+    my $url = sprintf("place/%s?", $p{woeid});
+    delete $p{woeid};
+    foreach my $k (keys %p) {
+        $url .= sprintf("%s=%s&", $k, $p{$k});
+    }
     return $self->_make_request($url);
 }
 
