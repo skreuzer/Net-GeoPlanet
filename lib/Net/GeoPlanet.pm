@@ -70,20 +70,22 @@ sub place {
 sub parent {
     my $self = shift;
     my %p = @_;
-    my $url = 'place/'    . $p{woeid} . '/parent?';
-    $url .= 'start='    . $p{start} . '&' if defined $p{start};
-    $url .= 'count='    . $p{count} . '&' if defined $p{count};
-    $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
+    my $url = sprintf("place/%s/parent?", $p{woeid});
+    delete $p{woeid};
+    foreach my $k (keys %p) {
+        $url .= sprintf("%s=%s&", $k, $p{$k});
+    }
     return $self->_make_request($url);
 }
 
 sub ancestors {
     my $self = shift;
     my %p = @_;
-    my $url = 'place/'    . $p{woeid} . '/ancestors?';
-    $url .= 'select='   . $p{select} . '&' if defined $p{select};
-    $url .= 'callback=' . $p{callback} . '&' if defined $p{callback};
+    my $url = sprintf("place/%s/ancestors?", $p{woeid});
+    delete $p{woeid};
+    foreach my $k (keys %p) {
+        $url .= sprintf("%s=%s&", $k, $p{$k});
+    }
     return $self->_make_request($url);
 }
 
